@@ -40,6 +40,7 @@ class OAuthManager:
     """
 
     def __init__(self, oauth_provider: Type[OAuth]):
+        """ use Dependency Injection pattern """
         self.oauth_provider = oauth_provider
 
     def build_payload(self):
