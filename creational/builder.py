@@ -2,7 +2,8 @@ from typing import Union
 
 
 class PushNotification:
-    def __init__(self, user: Union[int, str], content: str, url: str, extra: dict = None):
+    def __init__(self, user: Union[int, str], content: str, url: str,
+                 extra: dict = None):
         self.user = user
         self.url = url
         self.content = content

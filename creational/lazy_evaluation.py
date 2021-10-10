@@ -8,9 +8,13 @@ class Table:
 
     @classmethod
     def get_record(cls, row_id: int) -> Record:
-        """ if row_id not in cls.lookup_table, instantiate Record object on the fly. """
+        """
+        if row_id not in cls.lookup_table,
+        instantiate Record object on the fly.
+        """
         if row_id not in cls.lookup_table.keys():
-            cls.lookup_table[row_id] = Record(row_id)  # There must be more args.
+            # There must be more args.
+            cls.lookup_table[row_id] = Record(row_id)
         return cls.lookup_table[row_id]
 
 
