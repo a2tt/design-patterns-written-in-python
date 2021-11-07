@@ -9,12 +9,13 @@ class Request:
 
 
 class Dispatcher:
-    router_map = {}
+    """ Dispatcher """
+    ROUTER_MAP = {}
 
     @classmethod
     def dispatch(cls, path: str, method: str):
         try:
-            return cls.router_map.get((path, method))()
+            return cls.ROUTER_MAP.get((path, method))()
         except AttributeError:
             raise Exception('404 not found')
 
@@ -26,13 +27,14 @@ class Dispatcher:
                 return func(*args, **kwargs)
 
             for method in methods:
-                cls.router_map[(path, method)] = _decorated
+                cls.ROUTER_MAP[(path, method)] = _decorated
             return _decorated
 
         return decorated
 
 
 class FrontController:
+    """ Controller """
     def __init__(self):
         pass
 
@@ -42,11 +44,13 @@ class FrontController:
 
 @Dispatcher.route('/', ['GET'])
 def index():
+    """ View """
     print('index')
 
 
 @Dispatcher.route('/about', ['GET', 'POST'])
 def about():
+    """ View """
     print('I am a2tt!')
 
 
