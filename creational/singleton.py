@@ -13,7 +13,7 @@ class Logger:
         return cls._instance
 
     def log(self, *args):
-        pass
+        print(*args)
 
 
 if __name__ == '__main__':
