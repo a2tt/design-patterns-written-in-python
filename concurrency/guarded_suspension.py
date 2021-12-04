@@ -15,6 +15,7 @@ class Queue:
         return len(self.queue) == 0
 
     def get(self):
+        """ Dequeue """
         with self.condition:
             # If nothing is in the queue, wait (guarded state)
             while self.is_empty:
@@ -24,14 +25,15 @@ class Queue:
         return self.queue.popleft()
 
     def put(self, item: Any):
+        """ Enqueue """
         with self.condition:
             self.queue.append(item)
-            # Wake up condition-waiting thread after enqueue
+            # Wake up thread waiting the condition to be satisfied
             self.condition.notify()
 
 
 def lprint(*args: Iterable):
-    """ synchronized print """
+    """ Synchronized print """
     if not hasattr(lprint, 'lock'):
         lprint.lock = threading.Lock()
 
@@ -40,6 +42,7 @@ def lprint(*args: Iterable):
 
 
 def producer(q: Queue):
+    """ Produce(enqueue) items """
     for i in range(5):
         time.sleep(0.5 * i)
         item = i ** 2
@@ -48,6 +51,7 @@ def producer(q: Queue):
 
 
 def consumer(q: Queue):
+    """ Consume(dequeue) items """
     for i in range(3):
         item = q.get()
         lprint(f'Consumer get {item}')
