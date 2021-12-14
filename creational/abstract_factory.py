@@ -1,52 +1,80 @@
-from typing import Type
 from abc import ABC, abstractmethod
 
 
-class OAuthPayload:
-    """
-    Concrete class to be created.
-    """
+class Element(ABC):
+    """ Concrete class """
 
-    def __init__(self, provider: str):
-        self.provider = provider
-
-
-class OAuth(ABC):
-    """
-    Abstract class creating OAuthPayload.
-    It uses `factory pattern` for usability.
-    """
+    def __init__(self, style: str, tag: str = ''):
+        self.style = style
+        self.tag = tag
 
     @abstractmethod
-    def make_payload(self) -> OAuthPayload:
+    def render(self, content: str) -> str:
         raise NotImplementedError
 
 
-class GoogleOAuth(OAuth):
-    def make_payload(self) -> OAuthPayload:
-        return OAuthPayload('Google')
+class RawElement(Element):
+    def render(self, content: str):
+        return f'{content}'
 
 
-class FacebookOAuth(OAuth):
-    def make_payload(self) -> OAuthPayload:
-        return OAuthPayload('Facebook')
+class TailwindElement(Element):
+    def render(self, content: str):
+        return f'<{self.tag} class="{self.style}">{content}</{self.tag}>'
 
 
-class OAuthManager:
-    """
-    OAuthManger wants to create OAuthPayload object.
-    It does not create OAuthPayload directly, instead
-    delegates the responsibility of instantiation via OAuth class
-    """
+class UI(ABC):
+    """ Abstract factory class """
+    STYLE = 'Normal'
 
-    def __init__(self, oauth_provider: Type[OAuth]):
-        """ use Dependency Injection pattern """
-        self.oauth_provider = oauth_provider
+    @abstractmethod
+    def create_header(self) -> Element:
+        raise NotImplementedError
 
-    def build_payload(self):
-        return self.oauth_provider().make_payload()
+    @abstractmethod
+    def create_div(self) -> Element:
+        raise NotImplementedError
+
+
+class RawUI(UI):
+    def create_header(self) -> Element:
+        return RawElement(self.STYLE)
+
+    def create_div(self) -> Element:
+        return RawElement(self.STYLE)
+
+
+class TailwindUI(UI):
+    STYLE = 'TailwindUI'
+
+    def create_header(self) -> Element:
+        return TailwindElement(self.STYLE, 'h1')
+
+    def create_div(self) -> Element:
+        return TailwindElement(self.STYLE, 'div')
+
+
+class UIRenderer:
+    """ Client class that uses abstract class to instantiate concrete classes """
+
+    def __init__(self, ui: UI):
+        self.ui = ui
+
+    def render(self):
+        header = self.ui.create_header()
+        div = self.ui.create_div()
+
+        print(header.render('headerrrr'))
+        print(div.render('divvvv'))
+
+
+def main():
+    ui_renderer = UIRenderer(RawUI())
+    ui_renderer.render()
+
+    ui_renderer = UIRenderer(TailwindUI())
+    ui_renderer.render()
 
 
 if __name__ == '__main__':
-    payload = OAuthManager(GoogleOAuth).build_payload()
-    print(payload.provider)
+    main()
