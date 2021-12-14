@@ -61,7 +61,7 @@ class TailwindElement(Element):
     def render(self, content: str):
         return f'<{self.tag} class="{self.style}">{content}</{self.tag}>'
 ```
-`Element` is the concrete class that we want to create.
+`Element` is the concrete class we want to create.
 The `RawElement` and `TailwindElement` will render differently each other.  
 
 ```python
@@ -100,7 +100,7 @@ We have `RawUI` and `TailwindUI`. They have their own theme since they create di
 
 ```python
 class UIRenderer:
-    """ Client class that uses abstract class to instantiate concrete classes """
+    """ Client class that uses abstract factory class to instantiate concrete classes """
 
     def __init__(self, ui: UI):
         self.ui = ui
@@ -113,7 +113,7 @@ class UIRenderer:
         print(div.render('divvvv')) 
 ```
 As you can see, the `UIRenderer`, a client, creates elements calling the interfaces of the ui variable.
-The object creation is delegated to the `UI` abstract factory instead of created by the client directly.
+The object instantiation is delegated to the `UI` abstract factory instead of the client doing it directly.
 
 **Related**
 - [Factory Method](#Factory-Method)

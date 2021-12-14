@@ -55,7 +55,7 @@ class TailwindUI(UI):
 
 
 class UIRenderer:
-    """ Client class that uses abstract class to instantiate concrete classes """
+    """ Client class that uses abstract factory class to instantiate concrete classes """
 
     def __init__(self, ui: UI):
         self.ui = ui
