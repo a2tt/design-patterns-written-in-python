@@ -209,6 +209,59 @@ but implement subclasses of the `Crawler` class.
 Abstract Factory vs Factory Method
 ----------------
 
+- Both of the patterns decouple the creation of objects from the implementation of them.  
+- **Abstract Factory** is an object. **Factory Method** is a method.
+- **Abstract Factory** can have several factory methods that instantiate a group 
+of different classes of common theme.  
+- Because **Factory Method** is a method, subclasses can override the method to create different object. 
+
+**Abstract Factory**
+
+```python
+""" `Foo` and `Bar` have something in common in that they are Metasyntactic variable. """
+class Foo: pass
+class Bar: pass
+
+class SpecialFoo(Foo): pass
+class SpecialBar(Bar): pass
+
+class Factory:
+    """ Abstract Factory """
+    def create_foo(self):
+        return Foo()
+    def create_bar(self):
+        return Bar()
+
+class SpecialFactory(Factory):
+    def create_foo(self):
+        return SpecialFoo()
+    def create_bar(self):
+        return SpecialBar()
+
+class Client:
+    def do_something(self, factory: Factory):
+        f = factory.create_foo()
+        b = factory.create_bar()
+        # do something with f, b
+```
+
+**Factory Method**
+
+```python
+class Foo: pass
+class FooB(Foo): pass
+
+class A:
+    def create_foo(self):
+        """ factory method """
+        return Foo()
+
+class B(A):
+    def create_foo(self):
+        """ factory method """
+        return FooB()
+```
+
 Builder
 ----------------
 
