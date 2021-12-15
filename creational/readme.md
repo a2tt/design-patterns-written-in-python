@@ -12,7 +12,7 @@ Wikipedia says
 | Pattern | Description |
 |:-------:| :---------- |
 | [Abstract Factory](#Abstract-Factory) | Class containing a group of factory methods that have something in common. |
-| [Factory Method](#Factory-Method) |  |
+| [Factory Method](#Factory-Method) | Subclasses decide which class to instantiate. |
 | [Abstract factory vs Factory Method](#Abstract-factory-vs-Factory-Method) | |
 | [Builder](#Builder) |  |
 | [Singleton](#Singleton) |  |
@@ -117,12 +117,96 @@ The object instantiation is delegated to the `UI` abstract factory instead of th
 
 **Related**
 - [Factory Method](#Factory-Method)
-- [Abstract factory vs Factory Method](#Abstract-factory-vs-Factory-Method)
+- [Abstract Factory vs Factory Method](#Abstract-Factory-vs-Factory-Method)
 
 Factory Method
 ----------------
 
-Abstract factory vs Factory Method
+**Wikipedia says**
+> In class-baed programming, the factory method pattern is a creational pattern that uses 
+> factory methods to deal with the problem of creating objects without having to specify
+> the exact class of the object that will be created. This is done by creating objects
+> by calling a factory method rather than by calling a constructor.
+
+**In my words**
+> Subclasses decide which class to instantiate. 
+
+**Example**
+> We build two kind of crawler to parse web page and to return `Article` object.
+> Both of them is supposed to parse title and content, and especially `NewsCrawler` 
+> to parse the date published.
+
+```python
+class Article:
+    """ Concrete class """
+
+    def __init__(self, title: str, content: str):
+        self.title = title
+        self.content = content
+
+    def __repr__(self):
+        return f'{self.title} - {self.content[:50]}'
+
+
+class News(Article):
+    def __init__(self, title: str, content: str, published_at: str):
+        super().__init__(title, content)
+        self.published_at = published_at
+
+    def __repr__(self):
+        return f'{self.published_at} | ' + super().__repr__()
+```
+`Article` is the concrete class we want to instantiate and `News` inherits from it.
+
+```python
+class Crawler(ABC):
+    """ class containing factory method """
+
+    @classmethod
+    def crawl(cls) -> Article:
+        # do crawling ...
+        page_content = ''  # crawled web content
+        article = cls._parse_page(page_content)
+        return article
+
+    @classmethod
+    @abstractmethod
+    def _parse_page(cls, page_content) -> Article:
+        """
+        subclasses override this factory method
+        to parse page differently and to return different object
+        """
+        raise NotImplementedError
+
+
+class BlogCrawler(Crawler):
+    @classmethod
+    def _parse_page(cls, page_content) -> Article:
+        # parse page_content
+        title = 'Article title'
+        content = 'Article content'
+        return Article(title=title, content=content)
+
+
+class NewsCrawler(Crawler):
+    @classmethod
+    def _parse_page(cls, page_content) -> News:
+        # parse page_content
+        title = 'News title'
+        content = 'News content'
+        published_at = '2021-12-15'
+        return News(title=title, content=content, published_at=published_at)
+```
+`Crawler` abstract class have an interface, `_parse_page`, which is supposed to parse the page
+and to return `Article` or `News` object depending on the subclass it implements.  
+Creating object is delegated to the factory method so we don't need to specify what exact class to instantiate
+but implement subclasses of the `Crawler` class.
+
+**Related**
+- [Abstract Factory](#Abstract-Factory)
+- [Abstract Factory vs Factory Method](#Abstract-Factory-vs-Factory-Method)
+
+Abstract Factory vs Factory Method
 ----------------
 
 Builder
