@@ -1,6 +1,6 @@
 # Creational Pattern
 
-Wikipedia says
+**Wikipedia says**
 > In software engineering, creational design patterns are design patterns 
 > that deal with object creation mechanisms, trying to create objects 
 > in a manner suitable to the situation.
@@ -36,7 +36,7 @@ Abstract Factory
 > Class containing a group of factory methods that have something in common. 
 
 **Example**
-> To create UI system with various types, we defined RawUI and TailwindUI classes.
+> To create UI system with various types, we defined `RawUI` and `TailwindUI` classes.
 > Each classes has its own theme and has several elements, which have a unique rendering method.
 
 ```python
