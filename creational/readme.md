@@ -14,7 +14,7 @@
 | [Abstract Factory](#Abstract-Factory) | Class containing a group of factory methods that have something in common. |
 | [Factory Method](#Factory-Method) | Subclasses decide which class to instantiate. |
 | [Abstract factory vs Factory Method](#Abstract-factory-vs-Factory-Method) | |
-| [Builder](#Builder) |  |
+| [Builder](#Builder) | Construct a complex object step by step using a builder object. |
 | [Singleton](#Singleton) |  |
 | [Multiton](#Multiton) |  |
 | [Prototype](#Prototype) |  |
@@ -264,6 +264,60 @@ class B(A):
 
 Builder
 ----------------
+
+**Wikipedia says**
+> The builder pattern is a design pattern designed to provide a flexible solution to various
+> object creation problems in object-oriented programming. The intent of the Builder design pattern
+> is to separate the construction of a complex object from its representation. 
+
+**In my words**
+> Construct a complex object step by step using a builder object.
+
+**Example**
+> Imagine you made a push system. Each push has information like user id, landing url, message and so on.  
+> You noticed setting the attributes are more complex than you thought.
+> So you decided to make a push builder class to separate the 'construction' of the push from its usage.
+
+```python
+class PushNotification:
+    def __init__(self, user: Union[int, str], url: str, content: str,
+                 extra: dict = None):
+        self.user = user
+        self.url = url
+        self.content = content
+        self.extra = extra
+
+    def __repr__(self):
+        return f'To {self.user}\nURL: {self.url}\n{self.content}'
+
+
+class PushBuilder:
+    def __init__(self):
+        self.user = None
+        self.content = None
+        self.url = None
+        self.extra = {}
+
+    def set_user(self, user: Union[int, str]):
+        self.user = user
+
+    def set_content(self, content: str):
+        self.content = content
+
+    def set_url(self, url: str):
+        self.url = url
+
+    def set_extra(self, extra: dict):
+        if type(extra) == dict:
+            self.extra.update(extra)
+            self.extra = extra
+
+    def build(self) -> PushNotification:
+        return PushNotification(self.user, self.url, self.content, self.extra)
+```
+The `PushBuilder` class has several methods that set attributes for the `PushNotification`.
+You can set each attributes step by step calling the setter methods.
+When you call `PushBuilder.build`, the builder instantiates `PushNotification` class with the set attributes.   
 
 Singleton
 ----------------
