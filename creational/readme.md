@@ -15,7 +15,7 @@
 | [Factory Method](#Factory-Method) | Subclasses decide which class to instantiate. |
 | [Abstract factory vs Factory Method](#Abstract-factory-vs-Factory-Method) | |
 | [Builder](#Builder) | Construct a complex object step by step using a builder object. |
-| [Singleton](#Singleton) |  |
+| [Singleton](#Singleton) | Ensure that a class only has one instance and define a public access point to it. |
 | [Multiton](#Multiton) |  |
 | [Prototype](#Prototype) |  |
 | [RAII](#RAII) |  |
@@ -321,6 +321,40 @@ When you call `PushBuilder.build`, the builder instantiates `PushNotification` c
 
 Singleton
 ----------------
+
+**Wikipedia says**
+> In software engineering, the singleton pattern is a software design pattern that restricts
+> the instantiation of a class to one "single" instance.
+
+**In my words**
+> Ensure that a class only has one instance and define a public access point to it.
+
+**Example**
+> Consider a logger object that write log messages to a file.
+> Because the logger writes to a file, in some cases it would be better to have globally one logger
+> to prevent unexpected problems concerning the writing.
+
+```python
+class Logger:
+    _instance = None
+    _lock = threading.Lock()
+
+    def __new__(cls):
+        """ Instantiate the singleton class if not created yet and return the object. """
+        with cls._lock:  # Prevent simultaneous instantiation in a multi threaded environment.
+            if not cls._instance:
+                cls._instance = object.__new__(cls)
+
+        return cls._instance
+
+    def log(self, *args):
+        print(*args)
+```
+You can get a logger object by calling `Logger()` and as a singleton, only one of the `Logger` object
+can be instantiated per process.
+
+Because the sole object is kept alive throughout the process and a client is tightly coupled with the object,
+it would be more difficult to test them. 
 
 Multiton
 ----------------
