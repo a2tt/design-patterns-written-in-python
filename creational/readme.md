@@ -13,7 +13,7 @@
 |:-------:| :---------- |
 | [Abstract Factory](#Abstract-Factory) | Class containing a group of factory methods that have something in common. |
 | [Factory Method](#Factory-Method) | Subclasses decide which class to instantiate. |
-| [Abstract factory vs Factory Method](#Abstract-factory-vs-Factory-Method) | |
+| [Abstract factory vs Factory Method](#Abstract-factory-vs-Factory-Method) |  |
 | [Builder](#Builder) | Construct a complex object step by step using a builder object. |
 | [Singleton](#Singleton) | Ensure that a class only has one instance and define a public access point to it. |
 | [Multiton](#Multiton) | Mapped singleton instances |
@@ -21,7 +21,7 @@
 
 -----
 
-Abstract Factory
+🏭 Abstract Factory
 ----------------
 
 **Wikipedia says**
@@ -118,7 +118,7 @@ The object instantiation is delegated to the `UI` abstract factory instead of th
 - [Factory Method](#Factory-Method)
 - [Abstract Factory vs Factory Method](#Abstract-Factory-vs-Factory-Method)
 
-Factory Method
+🏗 Factory Method
 ----------------
 
 **Wikipedia says**
@@ -261,7 +261,7 @@ class B(A):
         return FooB()
 ```
 
-Builder
+🧱 Builder
 ----------------
 
 **Wikipedia says**
@@ -318,7 +318,7 @@ The `PushBuilder` class has several methods that set attributes for the `PushNot
 You can set each attributes step by step calling the setter methods.
 When you call `PushBuilder.build`, the builder instantiates `PushNotification` class with the set attributes.   
 
-Singleton
+🤴 Singleton
 ----------------
 
 **Wikipedia says**
@@ -359,7 +359,7 @@ it would be more difficult to test them.
 - [Multiton](#Multiton)
 - Lazy Loading
 
-Multiton
+👪 Multiton
 ----------------
 
 **Wikipedia says**
@@ -400,7 +400,7 @@ testing relevant classes would become more difficult.
 - [Singleton](#Singleton)
 - Lazy Loading
 
-Prototype
+🦎 Prototype
 ----------------
 
 **Wikipedia says**
