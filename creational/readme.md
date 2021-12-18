@@ -16,7 +16,7 @@
 | [Abstract factory vs Factory Method](#Abstract-factory-vs-Factory-Method) | |
 | [Builder](#Builder) | Construct a complex object step by step using a builder object. |
 | [Singleton](#Singleton) | Ensure that a class only has one instance and define a public access point to it. |
-| [Multiton](#Multiton) |  |
+| [Multiton](#Multiton) | Mapped singleton instances |
 | [Prototype](#Prototype) |  |
 | [RAII](#RAII) |  |
 
@@ -356,8 +356,50 @@ can be instantiated per process.
 Because the sole object is kept alive throughout the process and a client is tightly coupled with the object,
 it would be more difficult to test them. 
 
+**Related**
+- [Multiton](#Multiton)
+- Lazy Loading
+
 Multiton
 ----------------
+
+**Wikipedia says**
+> In software engineering, the multiton pattern is a design pattern which generalizes the singleton pattern.
+> Whereas the singleton allows only one instance of a class to be created, the multiton pattern allows for the 
+> controlled creation of multiple instances, which it manages through the use of a map.
+
+**In my words**
+> Mapped singleton instances
+
+**Example**
+> Suppose your application connects several types of database and you want to keep establishing only one connection to each database.
+
+```python
+class DataBase:
+    REGISTRY = {}
+
+    def __new__(cls, type_):
+        """
+        Instantiate the multiton class when `type_` has never been used to
+        created and return the object.
+        """
+        # Thread-safe operations required (ex. lock)
+        if type_ not in cls.REGISTRY.keys():
+            cls.REGISTRY[type_] = object.__new__(cls)
+
+        return cls.REGISTRY[type_]
+```
+
+The multiton pattern has same disadvantages with the singleton pattern. Tight coupling could happen and 
+testing relevant classes would become more difficult. 
+
+**A.K.A.**
+- Registry
+- Registry of singletons
+
+**Related**
+- [Singleton](#Singleton)
+- Lazy Loading
 
 Prototype
 ----------------
