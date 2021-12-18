@@ -429,4 +429,4 @@ class Prototype:
         return _clone
 ```
 
-Yet some other languages provides built-in `clone` functions, in Python, you can use `copy.deepcopy` to clone object.   
+Yet some other languages provide built-in `clone` functions, in Python, you can use `copy.deepcopy` to clone object.   
