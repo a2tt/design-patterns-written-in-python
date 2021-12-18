@@ -17,7 +17,7 @@
 | [Builder](#Builder) | Construct a complex object step by step using a builder object. |
 | [Singleton](#Singleton) | Ensure that a class only has one instance and define a public access point to it. |
 | [Multiton](#Multiton) | Mapped singleton instances |
-| [Prototype](#Prototype) |  |
+| [Prototype](#Prototype) | Clone the prototype to produce new objects |
 | [RAII](#RAII) |  |
 
 -----
@@ -403,6 +403,34 @@ testing relevant classes would become more difficult.
 
 Prototype
 ----------------
+
+**Wikipedia says**
+> It is used when the type of objects to create is determined by a prototypical instance, which is cloned to 
+> produce new objects. This pattern is used to avoid subclasses of an object creator in the client application and 
+> to avoid the inherent cost of creating a new object in the standard way.
+
+**In my words**
+> Clone the prototype to produce new objects
+
+**Example**
+> Imagine a class that requires 100 seconds to instantiate because there are many expensive steps.
+> If there is no change of reducing the initialization time and you should absolutely use the prohibitively
+> expensive object, then you can use prototype pattern. 
+
+```python
+class Prototype:
+    def __init__(self, name):
+        self.name = name
+        # there might be more expensive processes to initialize object
+
+    def clone(self, name=None) -> Prototype:
+        _clone = copy.deepcopy(self)  # or
+        if name:
+            _clone.name = name
+        return _clone
+```
+
+Yet some other languages provides built-in `clone` functions, in Python, you can use `copy.deepcopy` to clone object.   
 
 RAII
 ----------------
