@@ -18,7 +18,6 @@
 | [Singleton](#Singleton) | Ensure that a class only has one instance and define a public access point to it. |
 | [Multiton](#Multiton) | Mapped singleton instances |
 | [Prototype](#Prototype) | Clone the prototype to produce new objects |
-| [RAII](#RAII) |  |
 
 -----
 
@@ -431,6 +430,3 @@ class Prototype:
 ```
 
 Yet some other languages provides built-in `clone` functions, in Python, you can use `copy.deepcopy` to clone object.   
-
-RAII
-----------------
