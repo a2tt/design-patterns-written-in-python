@@ -9,7 +9,7 @@
 | Pattern | Description |
 |:-------:| :---------- |
 | [Adapter](#Adapter) | Wrapper converting the incompatible class into compatible one. |
-| [Bridge](#Bridge) |  |
+| [Bridge](#Bridge) | Separate abstraction from its implementation by putting them in separate classes. |
 | [Composite](#Composite) |  |
 | [Decorator](#Decorator) |  |
 | [Facade](#Facade) |  |
@@ -100,3 +100,67 @@ Instead of creating a class adapter, an object adapter could be used. `FileSyste
 ** Related**
 - [Decorator](#Decorator) : Dynamically adds responsibility to the interface by wrapping the original code.
 - [Facade](#Facade) : Provides a simplified interface.
+
+🌉 Bridge
+----------------
+
+**Wikipedia says**
+> The bridge pattern is a design pattern used in software engineering that is meant to
+> "decouple an abstraction from its implementation so that the two can vary independently".
+> The bridge uses encapsulation, aggregation, and can use inheritance to separate 
+> responsibilities into different classes
+
+**In my words**
+> Separate abstraction from its implementation by putting them in separate classes.
+
+**Example**
+> Consider you want to build a crawler that crawls Google and Twitter and that parses image and article.
+> You can make several crawlers that crawl Google's image, Google's article(post), Twitter's image
+> and Twitter's article(tweet) but this is not extensible. You would decide to use bridge pattern.
+
+```python
+class Crawler(ABC):
+    """ Crawler and CrawlerEngine are decoupled. """
+
+    def __init__(self, engine: CrawlerEngine):
+        self.engine = engine
+
+    @abstractmethod
+    def crawl_page(self):
+        raise NotImplementedError
+
+
+class GoogleCrawler(Crawler):
+    def crawl_page(self):
+        print('crawl google page')
+        self.engine.crawl()
+
+
+class TwitterCrawler(Crawler):
+    def crawl_page(self):
+        print('crawl twitter page')
+        self.engine.crawl()
+
+
+class CrawlerEngine(ABC):
+    """ CrawlerEngine object will be injected into Crawler. """
+
+    @abstractmethod
+    def crawl(self):
+        raise NotImplementedError
+
+
+class ImageCrawlerEngine(CrawlerEngine):
+    def crawl(self):
+        print('parse image')
+
+
+class ArticleCrawlerEngine(CrawlerEngine):
+    def crawl(self):
+        print('parse article')
+```
+The `CrawlerEngine` object is injected to the `Crawler` object. 
+In this way, you can decouple the abstraction and the implementation of `CrawlerEngine`.
+
+**Related**
+- Dependency Injection
