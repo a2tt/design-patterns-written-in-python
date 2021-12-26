@@ -1,10 +1,11 @@
+from __future__ import annotations
 from abc import ABC, abstractmethod
 
 
 class Crawler(ABC):
-    """ Crawler and CrawlerEngine is decoupled. """
+    """ Crawler and CrawlerEngine are decoupled. """
 
-    def __init__(self, engine):
+    def __init__(self, engine: CrawlerEngine):
         self.engine = engine
 
     @abstractmethod
@@ -14,18 +15,18 @@ class Crawler(ABC):
 
 class GoogleCrawler(Crawler):
     def crawl_page(self):
-        self.engine.crawl()
         print('crawl google page')
+        self.engine.crawl()
 
 
 class TwitterCrawler(Crawler):
     def crawl_page(self):
-        self.engine.crawl()
         print('crawl twitter page')
+        self.engine.crawl()
 
 
 class CrawlerEngine(ABC):
-    """ CrawlerEngine object is injected into Crawler. """
+    """ CrawlerEngine object will be injected into Crawler. """
 
     @abstractmethod
     def crawl(self):
