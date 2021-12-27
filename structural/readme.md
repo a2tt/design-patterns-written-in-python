@@ -11,7 +11,7 @@
 | [Adapter](#Adapter) | Wrapper converting the incompatible class into compatible one. |
 | [Bridge](#Bridge) | Separate abstraction from its implementation by putting them in separate classes. |
 | [Composite](#Composite) | A group of objects are treated the same way as a single instance of the same type of object using tree structure. |
-| [Decorator](#Decorator) |  |
+| [Decorator](#Decorator) | Provide new behavior at run-time for selected objects. |
 | [Facade](#Facade) |  |
 | [Flyweight](#Flyweight) |  |
 | [Flyweight vs Multiton](#Flyweight-vs-Multiton) |  |
@@ -276,3 +276,75 @@ So the whole hierarchy could be manipulated.
   </ul>
 </div>
 ``` 
+
+🎀 Decorator
+----------------
+
+**Wikipedia says**
+> In object-oriented programming, the decorator pattern is a design pattern that allows behavior to be added 
+> to an individual object, dynamically, without affecting the behavior of other objects from the same class.
+
+**In my words**
+> Provide new behavior at run-time for selected objects.
+
+**Example**
+> Consider you render HTML span tag with different features. Some of them are font-weight, font-family, color
+> or something else. Subclasses for each feature could be used, but there will be so many subclasses to cover 
+> all combinations of them. Decorator pattern can solve the problem adding each feature through a wrapper 
+> not a subclass.
+
+```python
+class Tag(ABC):
+    """ Decorated class """
+    @abstractmethod
+    def get_text(self):
+        raise NotImplementedError
+
+
+class EmptyTag(Tag):
+    def __init__(self, raw_text: str):
+        self.raw_text = raw_text
+
+    def get_text(self):
+        return self.raw_text
+```
+
+```python
+class TagDecorator(Tag):
+    """ Abstract Decorator class
+    It inherits the `Tag` so that the clients can implement it
+    as if it is the decorated(`Tag`) object.
+    """
+    def __init__(self, tag: Tag):
+        self.tag = tag  # decorated object
+
+    def get_text(self):
+        return self.tag.get_text()
+
+
+class BoldTagDecorator(TagDecorator):
+    def get_text(self):
+        return f'<b>{self.tag.get_text()}</b>'
+
+
+class ItalicTagDecorator(TagDecorator):
+    def get_text(self):
+        return f'<i>{self.tag.get_text()}</i>'
+```
+
+```python
+>>> empty_tag = EmptyTag('test')
+>>> empty_tag.get_text()
+test
+
+>>> decorated_tag = ItalicTagDecorator(BoldTagDecorator(empty_tag))
+>>> decorated_tag.get_text()
+<i><b>test</b></i>
+```
+When you implement subclasses for each feature, there are `BoldTag`, `ItalicTag`, `BoldItalicTag`, `RedTag`, `RedBoldTag`, 
+`RedItalicBoldTag` and all possible combinations of the features. 
+Decorators working as a wrapper do the job preventing unnecessary effort of subclassing.
+  
+
+**A.K.A.**
+- Wrapper
