@@ -31,10 +31,14 @@ class AdminRequiredPrivateDataManager(ABSPrivateDataManager):
             print('Only admin can execute query.')
 
 
-if __name__ == '__main__':
+def main():
     user = User('user')
     admin = User('admin')
 
     PrivateDataManager().query()
     AdminRequiredPrivateDataManager(user).query()
     AdminRequiredPrivateDataManager(admin).query()
+
+
+if __name__ == '__main__':
+    main()

@@ -54,7 +54,7 @@ class Leaf(TagComponent):
         self._print_close_tag(depth)
 
 
-if __name__ == '__main__':
+def main():
     root_div = Composite('div')
     ul_1 = Composite('ul')
     ul_2 = Composite('ul')
@@ -77,3 +77,7 @@ if __name__ == '__main__':
 
     composite_alone.raw_text = 'text in UL'
     composite_alone.render()
+
+
+if __name__ == '__main__':
+    main()

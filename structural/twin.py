@@ -53,7 +53,7 @@ class CrawlerPageStarter(CrawlerStarter):
             time.sleep(0.05)
 
 
-if __name__ == '__main__':
+def main():
     starter = CrawlerPageStarter()
     engine = GoogleCrawler()
 
@@ -61,3 +61,7 @@ if __name__ == '__main__':
     engine.set_twin(starter)
 
     starter.start()
+
+
+if __name__ == '__main__':
+    main()

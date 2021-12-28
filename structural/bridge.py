@@ -43,7 +43,7 @@ class ArticleCrawlerEngine(CrawlerEngine):
         print('parse article')
 
 
-if __name__ == '__main__':
+def main():
     crawlers = [
         GoogleCrawler(ImageCrawlerEngine()),
         TwitterCrawler(ArticleCrawlerEngine()),
@@ -51,3 +51,7 @@ if __name__ == '__main__':
 
     for c in crawlers:
         c.crawl_page()
+
+
+if __name__ == '__main__':
+    main()

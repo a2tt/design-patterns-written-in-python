@@ -47,7 +47,7 @@ class FileSystemAdapter:
             return self.fs.get_file()
 
 
-if __name__ == '__main__':
+def main():
     # Class adapter
     AWSS3ToFileSystemAdapter().get_file()
 
@@ -55,3 +55,7 @@ if __name__ == '__main__':
     FileSystemAdapter(AWSS3()).get_file()
     FileSystemAdapter(AzureBlob()).get_file()
     FileSystemAdapter(FileSystem()).get_file()
+
+
+if __name__ == '__main__':
+    main()
