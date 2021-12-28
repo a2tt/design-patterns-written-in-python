@@ -12,7 +12,7 @@
 | [Bridge](#Bridge) | Separate abstraction from its implementation by putting them in separate classes. |
 | [Composite](#Composite) | A group of objects are treated the same way as a single instance of the same type of object using tree structure. |
 | [Decorator](#Decorator) | Provide new behavior at run-time for selected objects. |
-| [Facade](#Facade) |  |
+| [Facade](#Facade) | A front-facing interface hiding more complex underlying code. |
 | [Flyweight](#Flyweight) |  |
 | [Flyweight vs Multiton](#Flyweight-vs-Multiton) |  |
 | [Marker](#Marker) |  |
@@ -348,3 +348,62 @@ Decorators working as a wrapper do the job preventing unnecessary effort of subc
 
 **A.K.A.**
 - Wrapper
+
+🚪 Facade
+----------------
+
+**Wikipedia says**
+> Analogous to a facade in architecture, a facade is an object that serves as a front-facing interface
+> masking more complex underlying or structural code. 
+
+**In my words**
+> A front-facing interface hiding more complex underlying code.
+
+**Example**
+> Do you know Curiosity on Mars? It is NASA's Mars exploration robot. It goes here and there, take a picture,
+> take a soil sample and do other things. It is clearly composed of so many parts and
+> they operate in a complex way but should operate coordinately.
+> A kind of facade method could be used to operate them easily.
+
+```python
+class Camera:
+    @staticmethod
+    def take_a_picture():
+        print('take a picture of the view')
+
+
+class Wheel:
+    @staticmethod
+    def rotate(deg):
+        print(f'rotate {deg}°')
+
+    @staticmethod
+    def move():
+        print('move forward')
+
+
+class CuriosityFacade:
+    """ https://en.wikipedia.org/wiki/Curiosity_(rover) """
+
+    def __init__(self):
+        self.wheel = Wheel()
+        self.camera = Camera()
+
+    def move(self, deg: int = 0):
+        self.wheel.rotate(deg)
+        self.camera.take_a_picture()
+        self.wheel.move()
+        self.camera.take_a_picture()
+```
+```
+>>> curiosity = CuriosityFacade()
+>>> curiosity.move(30)
+rotate 30°
+take a picture of the view
+move forward
+take a picture of the view
+```
+
+**Related**
+- [Adapter](#Adapter)
+- [Decorator](#Decorator)
