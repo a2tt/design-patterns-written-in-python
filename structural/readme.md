@@ -8,16 +8,16 @@
 
 | Pattern | Description |
 |:-------:| :---------- |
-| [Adapter](#Adapter) | Wrapper converting the incompatible class into compatible one. |
-| [Bridge](#Bridge) | Separate abstraction from its implementation by putting them in separate classes. |
-| [Composite](#Composite) | A group of objects are treated the same way as a single instance of the same type of object using tree structure. |
-| [Decorator](#Decorator) | Provide new behavior at run-time for selected objects. |
-| [Facade](#Facade) | A front-facing interface hiding more complex underlying code. |
-| [Flyweight](#Flyweight) | Minimize memory usage by sharing flyweights with other similar objects. |
+| [Adapter](#-Adapter) | Wrapper converting the incompatible class into compatible one. |
+| [Bridge](#-Bridge) | Separate abstraction from its implementation by putting them in separate classes. |
+| [Composite](#-Composite) | A group of objects are treated the same way as a single instance of the same type of object using tree structure. |
+| [Decorator](#-Decorator) | Provide new behavior at run-time for selected objects. |
+| [Facade](#-Facade) | A front-facing interface hiding more complex underlying code. |
+| [Flyweight](#-Flyweight) | Minimize memory usage by sharing flyweights with other similar objects. |
 | [Flyweight vs Multiton](#Flyweight-vs-Multiton) |  |
-| [Marker](#Marker) |  |
-| [Twin](#Twin) |  |
-| [Proxy](#Proxy) |  |
+| [Marker](#-Marker) |  |
+| [Twin](#-Twin) |  |
+| [Proxy](#-Proxy) |  |
 | [Decorator vs Proxy](#Decorator-vs-Proxy) |  |
 
 -----
@@ -98,8 +98,8 @@ Instead of creating a class adapter, an object adapter could be used. `FileSyste
 - Wrapper
 
 ** Related**
-- [Decorator](#Decorator) : Dynamically adds responsibility to the interface by wrapping the original code.
-- [Facade](#Facade) : Provides a simplified interface.
+- [Decorator](#-Decorator) : Dynamically adds responsibility to the interface by wrapping the original code.
+- [Facade](#-Facade) : Provides a simplified interface.
 
 🌉 Bridge
 ----------------
@@ -405,8 +405,8 @@ take a picture of the view
 ```
 
 **Related**
-- [Adapter](#Adapter)
-- [Decorator](#Decorator)
+- [Adapter](#-Adapter)
+- [Decorator](#-Decorator)
 
 
 🪶 Flyweight
@@ -480,7 +480,7 @@ Therefore, memory consumption and resource could be reduced.
 
 **Related**
 - [Flyweight vs Multiton](#Flyweight-vs-Multiton)
-- [Multiton](../creational/readme.md#Multiton)
+- [Multiton](../creational/readme.md#-Multiton)
 - Object Pool
 
 
