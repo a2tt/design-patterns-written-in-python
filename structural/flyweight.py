@@ -2,6 +2,7 @@ import random
 
 
 class Badge:
+    """Flyweight"""
     NAME = 'normal'
 
 
@@ -14,7 +15,7 @@ class MVPBadge(Badge):
 
 
 class BadgeFactory:
-    _BADGES = {}
+    _BADGES = {}  # Shared container to the flyweights
 
     @classmethod
     def get_badge(cls, type_: str) -> Badge:
@@ -42,8 +43,8 @@ class User:
 
 def main():
     users = []
-    for i in range(0, 100):
-        users.append(User(str(i), random.choice(['normal', VIPBadge.NAME, MVPBadge.NAME])))
+    for i in range(0, 10):
+        users.append(User(str(i), random.choice([Badge.NAME, VIPBadge.NAME, MVPBadge.NAME])))
 
     for user in users:
         user.introduce()
