@@ -398,6 +398,7 @@ it would become more difficult to test relevant classes.
 
 **Related**
 - [Singleton](#Singleton)
+- [Flyweight vs Multiton](../structural/readme.md#Flyweight-vs-Multiton)
 - Lazy Loading
 
 🦎 Prototype

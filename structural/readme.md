@@ -13,7 +13,7 @@
 | [Composite](#Composite) | A group of objects are treated the same way as a single instance of the same type of object using tree structure. |
 | [Decorator](#Decorator) | Provide new behavior at run-time for selected objects. |
 | [Facade](#Facade) | A front-facing interface hiding more complex underlying code. |
-| [Flyweight](#Flyweight) |  |
+| [Flyweight](#Flyweight) | Minimize memory usage by sharing flyweights with other similar objects. |
 | [Flyweight vs Multiton](#Flyweight-vs-Multiton) |  |
 | [Marker](#Marker) |  |
 | [Twin](#Twin) |  |
@@ -407,3 +407,91 @@ take a picture of the view
 **Related**
 - [Adapter](#Adapter)
 - [Decorator](#Decorator)
+
+
+🪶 Flyweight
+----------------
+
+**Wikipedia says**
+> A flyweight refers to an object that minimizes memory usage by sharing some of its data
+> with other similar objects.
+
+**In my words**
+> Minimize memory usage by sharing flyweights with other similar objects.
+
+**Example**
+> Consider there is a badge system in your game and each users has a badge.
+> Assumed that the badge has a intrinsic sharable state but not context-dependent one,
+> it would be better to instantiate the badge once for each type to reduce memory consumption and for performance.
+
+```python
+class Badge:
+    """Flyweight"""
+    NAME = 'normal'
+
+
+class VIPBadge(Badge):
+    NAME = 'VIP'
+
+
+class MVPBadge(Badge):
+    NAME = 'MVP'
+
+
+class BadgeFactory:
+    _BADGES = {}  # Shared container to the flyweights
+
+    @classmethod
+    def get_badge(cls, type_: str) -> Badge:
+        if type_ in cls._BADGES:
+            return cls._BADGES[type_]
+
+        if type_ == VIPBadge.NAME:
+            cls._BADGES[type_] = VIPBadge()
+        elif type_ == MVPBadge.NAME:
+            cls._BADGES[type_] = MVPBadge()
+        else:
+            cls._BADGES[type_] = Badge()
+
+        return cls._BADGES[type_]
+
+
+class User:
+    def __init__(self, name: str, badge: str = 'normal'):
+        self.name = name
+        self.badge = BadgeFactory.get_badge(badge)
+
+    def introduce(self):
+        print(f'My name is {self.name} and I have {self.badge.NAME}({id(self.badge)}) badge')
+```
+
+```python
+>>> for i in range(0, 5):
+...     User(str(i), random.choice([Badge.NAME, VIPBadge.NAME, MVPBadge.NAME])).introduce()
+...
+My name is 0 and I have normal(140171334950704) badge
+My name is 1 and I have VIP(140171334950560) badge
+My name is 2 and I have MVP(140171334950416) badge
+My name is 3 and I have VIP(140171334950560) badge
+My name is 4 and I have MVP(140171334950416) badge
+```
+Even if numerous users have badges, each badge only needs to be instantiated once and they are shared with users.
+Therefore, memory consumption and resource could be reduced. 
+
+**Related**
+- [Flyweight vs Multiton](#Flyweight-vs-Multiton)
+- [Multiton](../creational/readme.md#Multiton)
+- Object Pool
+
+
+Flyweight vs Multiton
+---------------------
+
+**Flyweight**
+- Intent: Minimize memory usage by sharing flyweights with other similar objects.
+- There is no demand that only a single instance should exist. A class can be instantiate more than once.
+- Ex) In word processor, when a character 'A' is a flyweight, then "AAAA" string consists of single 'A' object. 
+
+**Multiton**
+- Intent: Ensure that only one instance of a class could be exist for a key. 
+- There is a demand that only a single instance per key should exist.
