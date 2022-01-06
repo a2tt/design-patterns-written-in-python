@@ -390,7 +390,7 @@ class DataBase:
 ```
 
 The multiton pattern has same disadvantages with the singleton pattern. Tight coupling could happen and 
-testing relevant classes would become more difficult. 
+it would become more difficult to test relevant classes. 
 
 **A.K.A.**
 - Registry
