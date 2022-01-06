@@ -15,8 +15,7 @@
 | [Facade](#-Facade) | A front-facing interface hiding more complex underlying code. |
 | [Flyweight](#-Flyweight) | Minimize memory usage by sharing flyweights with other similar objects. |
 | [Flyweight vs Multiton](#Flyweight-vs-Multiton) |  |
-| [Marker](#-Marker) |  |
-| [Twin](#-Twin) |  |
+| [Twin](#-Twin) | Model multiple inheritance in programming languages that do not support it. |
 | [Proxy](#-Proxy) |  |
 | [Decorator vs Proxy](#Decorator-vs-Proxy) |  |
 
@@ -495,3 +494,120 @@ Flyweight vs Multiton
 **Multiton**
 - Intent: Ensure that only one instance of a class could be exist for a key. 
 - There is a demand that only a single instance per key should exist.
+
+
+👬 Twin
+----------------
+
+**Wikipedia says**
+> The twin pattern allows developers to model multiple inheritance. This pattern avoids 
+> many of the problems with multiple inheritance.
+
+**In my words**
+> Model multiple inheritance in programming languages that do not support it.
+
+The twin pattern is used in programming languages that do not support
+multiple inheritance. Because Python support this feature, there is no need to use the pattern.
+
+**Example**
+> Consider a crawler consists of a crawler engine and controller. You can implement multiple inheritance of the
+> two classes in a single class. But when it is not possible, Twin pattern can be used to workaround this.
+> That is, a subclass of the crawler engine has a twin object referencing the crawler controller and 
+> a subclass of the crawler controller has a twin object referencing the crawler engine.
+
+```python
+class CrawlerEngine:
+    """Super-class"""
+    NAME = 'base'
+
+    def crawl(self, page: int = 1):
+        raise NotImplementedError
+
+
+class CrawlerController:
+    """Super-class"""
+
+    def __init__(self, max_page: int = 5):
+        self.max_page = max_page
+
+    def start(self):
+        raise NotImplementedError
+
+
+class RedditCrawler(CrawlerEngine, CrawlerController):
+    """Use multiple inheritance"""
+    NAME = 'Reddit'
+
+    def crawl(self, page: int = 1):
+        print(f'Crawling {self.NAME} | page {page}')
+
+    def start(self):
+        page = 1
+        while page <= self.max_page:
+            self.crawl(page)
+            page += 1
+
+        print('Complete')
+```
+`CrawlerEngine` and `CrawlerController` is the superclasses that we want to implement in a single class and
+`RedditCrawler` is an example of multiple inheritance of the classes.  
+But what if it is impossible, like in JAVA?
+
+```python
+class GoogleCrawlerEngine(CrawlerEngine):
+    """Twin sub-class"""
+    NAME = 'Google'
+
+    def __init__(self):
+        self.twin: Optional[CrawlerController] = None
+
+    def set_twin(self, twin: CrawlerController):
+        self.twin = twin
+
+    def crawl(self, page: int = 1):
+        print(f'Crawling {self.NAME} | page {page}')
+
+
+class CrawlerStarter(CrawlerController):
+    """Twin sub-class"""
+
+    def __init__(self, max_page: int = 3):
+        super().__init__(max_page)
+        self.twin: Optional[CrawlerEngine] = None
+
+    def set_twin(self, twin: CrawlerEngine):
+        self.twin = twin
+
+    def start(self):
+        page = 1
+        while page <= self.max_page:
+            self.twin.crawl(page)
+            page += 1
+
+        print('Complete')
+```
+`GoogleCrawlerEngine` and `CrawlerStarter` inherits `CrawlerEngine` and `CrawlerController` respectively.  
+The point is, they have `self.twin` objects which are set in `set_twin` method and each twin object references
+each other.
+
+```text
+>>> # Multiple inheritance
+>>> RedditCrawler().start()
+Crawling Reddit | page 1
+Crawling Reddit | page 2
+Crawling Reddit | page 3
+Complete
+
+>>> # Twin pattern
+>>> starter = CrawlerStarter()
+>>> engine = GoogleCrawlerEngine()
+
+>>> starter.set_twin(engine)
+>>> engine.set_twin(starter)
+
+>>> starter.start()
+Crawling Google | page 1
+Crawling Google | page 2
+Crawling Google | page 3
+Complete
+```
