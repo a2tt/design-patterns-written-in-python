@@ -348,6 +348,10 @@ Decorators working as a wrapper do the job preventing unnecessary effort of subc
 **A.K.A.**
 - Wrapper
 
+**Related**
+- [Decorator vs Proxy](#Decorator-vs-Proxy)
+
+
 🚪 Facade
 ----------------
 
@@ -566,6 +570,10 @@ checks who is executing the query.
 Decorator vs Proxy
 ----------------
 
+The **Decorator** enhances what its delegatee does: which means, enhances the interface of the delegatee.
+
+On the other hand, The **Proxy** provides same interface with the delegatee and can restrict what a client does
+by controlling access to the method.
 
 
 👬 Twin
