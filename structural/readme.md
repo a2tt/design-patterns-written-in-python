@@ -15,9 +15,9 @@
 | [Facade](#-Facade) | A front-facing interface hiding more complex underlying code. |
 | [Flyweight](#-Flyweight) | Minimize memory usage by sharing flyweights with other similar objects. |
 | [Flyweight vs Multiton](#Flyweight-vs-Multiton) |  |
-| [Twin](#-Twin) | Model multiple inheritance in programming languages that do not support it. |
-| [Proxy](#-Proxy) |  |
+| [Proxy](#-Proxy) | A wrapper providing additional logic |
 | [Decorator vs Proxy](#Decorator-vs-Proxy) |  |
+| [Twin](#-Twin) | Model multiple inheritance in programming languages that do not support it. |
 
 -----
 
@@ -96,7 +96,7 @@ Instead of creating a class adapter, an object adapter could be used. `FileSyste
 - Translator
 - Wrapper
 
-** Related**
+**Related**
 - [Decorator](#-Decorator) : Dynamically adds responsibility to the interface by wrapping the original code.
 - [Facade](#-Facade) : Provides a simplified interface.
 
@@ -494,6 +494,78 @@ Flyweight vs Multiton
 **Multiton**
 - Intent: Ensure that only one instance of a class could be exist for a key. 
 - There is a demand that only a single instance per key should exist.
+
+
+👐 Proxy
+----------------
+
+**Wikipedia says**
+> A proxy, in its most general form, is a class functioning as an interface to something else. The proxy could 
+> interface to anything. In short, a proxy is a wrapper or agent object that is being called by the client to access the
+> real object, or can provide additional logic.
+
+**In my words**
+> A wrapper providing additional logic
+
+**Example**
+> Imagine a data manager class that takes charge of all database queries. Because it handles private and sensitive data, 
+> only admin users are allowed to use it. Using proxy pattern, the restrictive functionality could be implemented
+> without modifying original data manager class.
+
+```python
+class User:
+    def __init__(self, role: str = 'user'):
+        self.role = role
+
+
+class DataManager(ABC):
+    @abstractmethod
+    def query(self):
+        raise NotImplementedError
+
+
+class UserDataManager:
+    def query(self):
+        print('Query user data')
+
+
+class AdminRequiredUserDataManager(DataManager):
+    """ A proxy class of UserDataManager to restrict execution from non-admin users """
+
+    def __init__(self, user: User):
+        self.manager = UserDataManager()
+        self.user = user
+
+    def query(self):
+        if self.user.role == 'admin':
+            self.manager.query()
+        else:
+            print('Only admin can execute query.')
+```
+```text
+>>> user = User('user')
+>>> admin = User('admin')
+>>> UserDataManager().query()
+Query user data
+>>> AdminRequiredUserDataManager(user).query()
+Only admin can execute query.
+>>> AdminRequiredUserDataManager(admin).query()
+Query user data
+```
+
+The `UserDataManager` takes charge of querying user related data and its proxy class, `AdminRequiredUserDataManager`,
+checks who is executing the query.
+
+**A.K.A.**
+- Surrogate
+
+**Related**
+- [Decorator vs Proxy](#Decorator-vs-Proxy)
+
+
+Decorator vs Proxy
+----------------
+
 
 
 👬 Twin
