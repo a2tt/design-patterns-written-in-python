@@ -16,15 +16,24 @@ class FileSystem:
         print('This is local file')
 
 
-class AWSS3ToFileSystemAdapter(AWSS3):
-    """ class adapter """
+class AWSS3ToFileSystemAdapter(AWSS3, FileSystem):
+    """
+    Class Adapter
+    This class adapter uses multiple polymorphic interfaces implementing or
+    inheriting both the interface that is expected and the interface that
+    is pre-existing.
+    """
 
     def get_file(self):
         return self.get_object()
 
 
 class FileSystemAdapter:
-    """ object adapter """
+    """
+    Object Adapter
+    This object adapter contains an instance of the class it wraps and
+    makes calls to the instance of the wrapped object.
+    """
 
     def __init__(self, fs):
         self.fs = fs
@@ -38,9 +47,15 @@ class FileSystemAdapter:
             return self.fs.get_file()
 
 
-if __name__ == '__main__':
+def main():
+    # Class adapter
     AWSS3ToFileSystemAdapter().get_file()
 
+    # Object adapter
     FileSystemAdapter(AWSS3()).get_file()
     FileSystemAdapter(AzureBlob()).get_file()
     FileSystemAdapter(FileSystem()).get_file()
+
+
+if __name__ == '__main__':
+    main()

@@ -6,22 +6,22 @@ class User:
         self.role = role
 
 
-class ABSPrivateDataManager(ABC):
+class DataManager(ABC):
     @abstractmethod
     def query(self):
         raise NotImplementedError
 
 
-class PrivateDataManager:
+class UserDataManager(DataManager):
     def query(self):
         print('Query user data')
 
 
-class AdminRequiredPrivateDataManager(ABSPrivateDataManager):
-    """ A proxy class of PrivateDataManager to restrict execution of non-admin users """
+class AdminRequiredUserDataManager(DataManager):
+    """ A proxy class of UserDataManager to restrict execution from non-admin users """
 
     def __init__(self, user: User):
-        self.manager = PrivateDataManager()
+        self.manager = UserDataManager()
         self.user = user
 
     def query(self):
@@ -31,10 +31,14 @@ class AdminRequiredPrivateDataManager(ABSPrivateDataManager):
             print('Only admin can execute query.')
 
 
-if __name__ == '__main__':
+def main():
     user = User('user')
     admin = User('admin')
 
-    PrivateDataManager().query()
-    AdminRequiredPrivateDataManager(user).query()
-    AdminRequiredPrivateDataManager(admin).query()
+    UserDataManager().query()
+    AdminRequiredUserDataManager(user).query()
+    AdminRequiredUserDataManager(admin).query()
+
+
+if __name__ == '__main__':
+    main()

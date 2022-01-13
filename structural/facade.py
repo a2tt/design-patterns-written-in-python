@@ -28,6 +28,10 @@ class CuriosityFacade:
         self.camera.take_a_picture()
 
 
-if __name__ == '__main__':
+def main():
     curiosity = CuriosityFacade()
     curiosity.move(30)
+
+
+if __name__ == '__main__':
+    main()

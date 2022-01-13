@@ -1,63 +1,92 @@
 """
-Twin pattern is used in programming languages that do not support
-multiple inheritance. Because Python support this feature, there
-is no need to use Twin pattern when other options available.
+The twin pattern is used in programming languages that do not support
+multiple inheritance. Because Python support this feature,
+there is no need to use the pattern.
 """
 
-import time
 from typing import Optional
 
 
 class CrawlerEngine:
+    """Super-class"""
     NAME = 'base'
-
-    def __init__(self):
-        self.twin: Optional[CrawlerStarter] = None
-
-    def set_twin(self, twin):
-        self.twin = twin
 
     def crawl(self, page: int = 1):
         raise NotImplementedError
 
 
-class CrawlerStarter:
-    def __init__(self):
-        self.twin: Optional[CrawlerEngine] = None
-        self.counter = 0
+class CrawlerController:
+    """Super-class"""
 
-    def set_twin(self, twin):
-        self.twin = twin
-
-    def incr_crawl_cnt(self):
-        self.counter += 1
+    def __init__(self, max_page: int = 3):
+        self.max_page = max_page
 
     def start(self):
         raise NotImplementedError
 
 
-class GoogleCrawler(CrawlerEngine):
-    NAME = 'Google'
+class RedditCrawler(CrawlerEngine, CrawlerController):
+    """Use multiple inheritance"""
+    NAME = 'Reddit'
 
     def crawl(self, page: int = 1):
         print(f'Crawling {self.NAME} | page {page}')
-        self.twin.incr_crawl_cnt()
 
-
-class CrawlerPageStarter(CrawlerStarter):
     def start(self):
         page = 1
-        while page < 10000 and self.counter < 10:
+        while page <= self.max_page:
+            self.crawl(page)
+            page += 1
+
+        print('Complete')
+
+
+class GoogleCrawlerEngine(CrawlerEngine):
+    """Twin sub-class"""
+    NAME = 'Google'
+
+    def __init__(self):
+        self.twin: Optional[CrawlerController] = None
+
+    def set_twin(self, twin: CrawlerController):
+        self.twin = twin
+
+    def crawl(self, page: int = 1):
+        print(f'Crawling {self.NAME} | page {page}')
+
+
+class CrawlerStarter(CrawlerController):
+    """Twin sub-class"""
+
+    def __init__(self, max_page: int = 3):
+        super().__init__(max_page)
+        self.twin: Optional[CrawlerEngine] = None
+
+    def set_twin(self, twin: CrawlerEngine):
+        self.twin = twin
+
+    def start(self):
+        page = 1
+        while page <= self.max_page:
             self.twin.crawl(page)
             page += 1
-            time.sleep(0.05)
+
+        print('Complete')
 
 
-if __name__ == '__main__':
-    starter = CrawlerPageStarter()
-    engine = GoogleCrawler()
+def main():
+    # Multiple inheritance
+    RedditCrawler().start()
+
+    # Twin pattern
+    starter = CrawlerStarter()
+    engine = GoogleCrawlerEngine()
 
     starter.set_twin(engine)
     engine.set_twin(starter)
 
     starter.start()
+
+
+if __name__ == '__main__':
+    main()

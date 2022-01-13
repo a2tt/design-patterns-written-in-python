@@ -2,13 +2,15 @@ from abc import ABC, abstractmethod
 
 
 class Tag(ABC):
+    """ Decorated class """
+
     @abstractmethod
     def get_text(self):
         raise NotImplementedError
 
 
 class EmptyTag(Tag):
-    def __init__(self, raw_text):
+    def __init__(self, raw_text: str):
         self.raw_text = raw_text
 
     def get_text(self):
@@ -16,6 +18,11 @@ class EmptyTag(Tag):
 
 
 class TagDecorator(Tag):
+    """ Abstract Decorator class
+    It inherits the `Tag` so that the clients can implement it
+    as if it is the decorated(`Tag`) object.
+    """
+
     def __init__(self, tag: Tag):
         self.tag = tag  # decorated object
 
@@ -33,7 +40,7 @@ class ItalicTagDecorator(TagDecorator):
         return f'<i>{self.tag.get_text()}</i>'
 
 
-if __name__ == '__main__':
+def main():
     # decorated object
     empty_tag = EmptyTag('test')
     print(empty_tag.get_text())
@@ -41,3 +48,7 @@ if __name__ == '__main__':
     # decorator object
     decorated_tag = ItalicTagDecorator(BoldTagDecorator(empty_tag))
     print(decorated_tag.get_text())
+
+
+if __name__ == '__main__':
+    main()

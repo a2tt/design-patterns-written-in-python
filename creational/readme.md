@@ -11,13 +11,13 @@
 
 | Pattern | Description |
 |:-------:| :---------- |
-| [Abstract Factory](#Abstract-Factory) | Class containing a group of factory methods that have something in common. |
-| [Factory Method](#Factory-Method) | Subclasses decide which class to instantiate. |
+| [Abstract Factory](#-Abstract-Factory) | Class containing a group of factory methods that have something in common. |
+| [Factory Method](#-Factory-Method) | Subclasses decide which class to instantiate. |
 | [Abstract factory vs Factory Method](#Abstract-factory-vs-Factory-Method) |  |
-| [Builder](#Builder) | Construct a complex object step by step using a builder object. |
-| [Singleton](#Singleton) | Ensure that a class only has one instance and define a public access point to it. |
-| [Multiton](#Multiton) | Mapped singleton instances |
-| [Prototype](#Prototype) | Clone the prototype to produce new objects |
+| [Builder](#-Builder) | Construct a complex object step by step using a builder object. |
+| [Singleton](#-Singleton) | Ensure that a class only has one instance and define a public access point to it. |
+| [Multiton](#-Multiton) | Mapped singleton instances |
+| [Prototype](#-Prototype) | Clone the prototype to produce new objects |
 
 -----
 
@@ -115,7 +115,7 @@ As you can see, the `UIRenderer`, a client, creates elements calling the interfa
 The object instantiation is delegated to the `UI` abstract factory instead of the client doing it directly.
 
 **Related**
-- [Factory Method](#Factory-Method)
+- [Factory Method](#-Factory-Method)
 - [Abstract Factory vs Factory Method](#Abstract-Factory-vs-Factory-Method)
 
 🏗 Factory Method
@@ -202,7 +202,7 @@ Creating object is delegated to the factory method so we don't need to specify w
 but implement subclasses of the `Crawler` class.
 
 **Related**
-- [Abstract Factory](#Abstract-Factory)
+- [Abstract Factory](#-Abstract-Factory)
 - [Abstract Factory vs Factory Method](#Abstract-Factory-vs-Factory-Method)
 
 Abstract Factory vs Factory Method
@@ -356,7 +356,7 @@ Because the sole object is kept alive throughout the process and a client is tig
 it would be more difficult to test them. 
 
 **Related**
-- [Multiton](#Multiton)
+- [Multiton](#-Multiton)
 - Lazy Loading
 
 👪 Multiton
@@ -390,14 +390,15 @@ class DataBase:
 ```
 
 The multiton pattern has same disadvantages with the singleton pattern. Tight coupling could happen and 
-testing relevant classes would become more difficult. 
+it would become more difficult to test relevant classes. 
 
 **A.K.A.**
 - Registry
 - Registry of singletons
 
 **Related**
-- [Singleton](#Singleton)
+- [Singleton](#-Singleton)
+- [Flyweight vs Multiton](../structural/readme.md#Flyweight-vs-Multiton)
 - Lazy Loading
 
 🦎 Prototype
