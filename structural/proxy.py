@@ -12,7 +12,7 @@ class DataManager(ABC):
         raise NotImplementedError
 
 
-class UserDataManager:
+class UserDataManager(DataManager):
     def query(self):
         print('Query user data')
 
