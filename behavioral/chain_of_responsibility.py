@@ -1,18 +1,19 @@
+from __future__ import annotations
+
 import os
 from abc import ABC, abstractmethod
-from typing import Optional, TypeVar, Union
+from typing import Optional
 
-T = TypeVar('T')
 
 
 class FileLoader(ABC):
-    def __init__(self, successor: Optional[T] = None):
+    def __init__(self, successor: Optional[FileLoader]):
         self.successor: FileLoader = successor
 
     @abstractmethod
-    def load_file(self, filepath: str) -> Union[str, bool]:
-        """ Return file object. In this example, return filepath if file exists else False """
-        raise NotImplementedError('Please implement `load_file` function.')
+    def load_file(self, filepath: str) -> Optional[File]:
+        """ Return file object """
+        raise NotImplementedError
 
 
 class GoogleDrive(FileLoader):
