@@ -10,7 +10,7 @@
 | Pattern | Description |
 |:-------:| :---------- |
 | [Chain-of-Responsibility](#-Chain-of-Responsibility) | Define a chain of the request handler objects each having its responsibility. |
-| [Command](#-Command) | |
+| [Command](#-Command) | Encapsulate all information needed to perform an action as an object. |
 | [Interpreter](#-Interpreter) | |
 | [Iterator](#-Iterator) | |
 | [Mediator](#-Mediator) | |
@@ -95,4 +95,81 @@ None
 As you can see, the `load_file` methods are executed in order until it finds the file.  
 For this reason, the request sender is decoupled with a particular receiver(handler).
 
- 
+
+
+
+📦 Command
+--------------------------
+
+**Wikipedia says**
+> The command pattern is a behavioral design pattern in which an object is used to encapsulate all information needed to perform an action or trigger an event at a later time. This information includes the method name, the object that owns the method and values for the method parameters.
+
+**In my words**
+> Encapsulate all information needed to perform an action as an object. 
+> It mirrors the semantics of first-class functions and higher-order functions
+
+**Example**
+
+```python
+class Bulb:
+    """ Receiver """
+
+    @staticmethod
+    def turn_on():
+        print('Let there be light.')
+
+    @staticmethod
+    def turn_off():
+        print('Let there be darkness.')
+```
+
+```python
+class Command(ABC):
+    """ Command interface class """
+
+    def __init__(self, bulb: Bulb):
+        self.bulb = bulb
+
+    @abstractmethod
+    def execute(self):
+        raise NotImplementedError
+
+
+class TurnOnCommand(Command):
+    def execute(self):
+        self.bulb.turn_on()
+
+
+class TurnOffCommand(Command):
+    def execute(self):
+        self.bulb.turn_off()
+
+```
+
+```python
+class Button:
+    """ Invoker class """
+
+    @staticmethod
+    def press(command: Command):
+        command.execute()
+```
+
+
+```python
+>>> # receiver
+>>> bulb = Bulb()
+
+>>> # command
+>>> turn_on_command = TurnOnCommand(bulb)
+>>> turn_off_command = TurnOffCommand(bulb)
+
+>>> # invoker
+>>> button = Button()
+
+>>> button.press(turn_on_command)
+Let there be light.
+
+>>> button.press(turn_off_command)
+Let there be darkness.
+```
