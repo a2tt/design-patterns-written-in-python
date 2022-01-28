@@ -11,8 +11,7 @@
 |:-------:| :---------- |
 | [Chain-of-Responsibility](#-Chain-of-Responsibility) | Define a chain of the request handler objects each having its responsibility. |
 | [Command](#-Command) | Encapsulate all information needed to perform an action as an object. |
-| [Interpreter](#-Interpreter) | |
-| [Iterator](#-Iterator) | |
+| [Iterator](#-Iterator) | Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation. |
 | [Mediator](#-Mediator) | |
 | [Memento](#-Memento) | |
 | [Observer](#-Observer) | |
@@ -173,3 +172,68 @@ Let there be light.
 >>> button.press(turn_off_command)
 Let there be darkness.
 ```
+
+
+♾️ Interpreter
+--------------------------
+
+**Wikipedia says**
+> The iterator pattern is a design pattern in which an iterator is used to traverse a container and
+> access the container's elements. The iterator pattern decouples algorithms from containers.
+
+**In my words**
+> Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation.
+
+**Example**
+
+Python itself already implements the iterator pattern as a generator.
+
+```python
+def counter(start: int, end: int):
+    """ Built-in generator """
+
+    for c in range(start, end + 1):
+        yield c
+```
+```
+>>> for c in counter(6, 8):
+>>>     print(c)
+6
+7
+8
+```
+you can implement a generator function like this. 
+The function returns a lazy iterator. Whenever you iterate it, it starts to run the code from the previously stopped position(ex. yield), and returns a value.
+
+Or, make a custom one.
+
+```python
+class Counter:
+    """ Custom iterator """
+
+    def __init__(self, start: int, end: int):
+        self.num = start - 1
+        self.end = end
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.num < self.end:
+            self.num += 1
+            return self.num
+
+        raise StopIteration
+```
+```
+>>> for c in Counter(2, 4):
+>>>    print(c)
+2
+3
+4
+```
+Clients of the iterator can traverse the iterable object, but does not need to know its representation.
+
+
+**A.K.A**
+- Cursor
