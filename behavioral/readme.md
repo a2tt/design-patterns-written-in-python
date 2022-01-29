@@ -174,7 +174,7 @@ Let there be darkness.
 ```
 
 
-♾️ Interpreter
+♾️ Iterator
 --------------------------
 
 **Wikipedia says**
