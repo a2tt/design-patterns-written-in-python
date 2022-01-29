@@ -12,7 +12,7 @@
 | [Chain-of-Responsibility](#-Chain-of-Responsibility) | Define a chain of the request handler objects each having its responsibility. |
 | [Command](#-Command) | Encapsulate all information needed to perform an action as an object. |
 | [Iterator](#-Iterator) | Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation. |
-| [Mediator](#-Mediator) | |
+| [Mediator](#-Mediator) | Controls communications among multiple objects. So the objects won’t interact with each other directly, and don’t need to know each other. |
 | [Memento](#-Memento) | |
 | [Observer](#-Observer) | |
 | [State](#-State) | |
@@ -237,3 +237,93 @@ Clients of the iterator can traverse the iterable object, but does not need to k
 
 **A.K.A**
 - Cursor
+
+
+🌐 Mediator
+----------
+
+**Wikipedia says**
+> The mediator pattern defines an object that encapsulates how a set of objects interact. This pattern is considered to be a behavioral pattern due to the way it can alter the program's running behavior.
+> With the mediator pattern, communication between objects is encapsulated within a mediator object. Objects no longer communicate directly with each other, but instead communicate through the mediator. This reduces the dependencies between communicating objects, thereby reducing coupling.
+
+**In my words**
+> A mediator controls communications among multiple objects. 
+> So the objects won’t interact with each other directly, and don’t need to know each other.
+
+**Example**
+> Imagine you are building a system trading. There are a control panel that controls all the system,
+> a trader that makes or cancels an order, and an order manager that traces the statuses of the orders.
+> Whenever the trader makes an order, it must pass the information about the order to the control panel and the order manager. Instead of sending the message directly, it sends it to the mediator, 
+> and then the mediator distributes the message to the specified targets. 
+
+```python
+class Mediator:
+    """ Mediator """
+
+    def __init__(self):
+        self.components: DefaultDict[str, List[Component]] = defaultdict(list)
+
+    def register_component(self, name: str, comp: Component):
+        self.components[name].append(comp)
+
+    def event_handler(self, data: dict):
+        for target in self.components[data.get('target')]:
+            target.event_handler(data)
+```
+`Mediator` has the `components` variable that interact each other through it.
+
+```python
+class Component:
+    """
+    Colleague components
+    Components communicate each other through mediator.
+    """
+    NAME = ''
+
+    def __init__(self, mediator: Mediator):
+        self.mediator = mediator
+        self.mediator.register_component(self.NAME, self)
+
+    def send_event(self, data: dict):
+        self.mediator.event_handler(data)
+
+    def event_handler(self, data: dict):
+        print(f'{self.NAME} got event: {data}')
+
+
+class ControlPanel(Component):
+    """ control panel component """
+    NAME = 'ControlPanel'
+
+
+class Trader(Component):
+    """ trader component """
+    NAME = 'Trader'
+
+
+class OrderManager(Component):
+    """ order manager component """
+    NAME = 'OrderManager'
+```
+When the component calls its `send_event` method, the data passed is sent to the mediator,
+and then the mediator distributes the message to the target components.
+
+```plaintext
+>>> # Create mediator and components
+>>> mediator = Mediator()
+>>> control_panel = ControlPanel(mediator)
+>>> trader = Trader(mediator)
+>>> order_manager = OrderManager(mediator)
+
+>>> # In real world, all the events will be emitted in a thread of each component
+>>> control_panel.send_event({'target': trader.NAME, 'event': 'MOD_VAR', 'value': 1})
+Trader got event: {'target': trader.NAME, 'event': 'MOD_VAR', 'value': 1}
+>>> trader.send_event({'target': control_panel.NAME, 'event': 'NEW_ORDER', 'order_id': 1234})
+ControlPanel got event: {'target': control_panel.NAME, 'event': 'NEW_ORDER', 'order_id': 1234}
+>>> trader.send_event({'target': order_manager.NAME, 'event': 'NEW_ORDER', 'order_id': 1234})
+OrderManager got event: {'target': order_manager.NAME, 'event': 'NEW_ORDER', 'order_id': 1234}
+>>> order_manager.send_event({'target': control_panel.NAME, 'event': 'TX', 'order_id': 1234})
+ControlPanel got event: {'target': control_panel.NAME, 'event': 'TX', 'order_id': 1234}
+```
+Thanks to the mediator, the components don't need to know the implementations of the others, 
+but need to simply specify the name of the target component.
