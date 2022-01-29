@@ -50,7 +50,7 @@ class OrderManager(Component):
     NAME = 'OrderManager'
 
 
-if __name__ == '__main__':
+def main():
     # Create mediator and components
     mediator = Mediator()
     control_panel = ControlPanel(mediator)
@@ -62,3 +62,7 @@ if __name__ == '__main__':
     trader.send_event({'target': control_panel.NAME, 'event': 'NEW_ORDER', 'order_id': 1234})
     trader.send_event({'target': order_manager.NAME, 'event': 'NEW_ORDER', 'order_id': 1234})
     order_manager.send_event({'target': control_panel.NAME, 'event': 'TX', 'order_id': 1234})
+
+
+if __name__ == '__main__':
+    main()
