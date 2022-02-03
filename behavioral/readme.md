@@ -13,7 +13,7 @@
 | [Command](#-Command) | Encapsulate all information needed to perform an action as an object. |
 | [Iterator](#-Iterator) | Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation. |
 | [Mediator](#-Mediator) | Controls communications among multiple objects. So the objects won't interact with each other directly, and don't need to know each other. |
-| [Memento](#-Memento) | |
+| [Memento](#-Memento) | Provides the ability to restore an object to its previous state. |
 | [Observer](#-Observer) | |
 | [State](#-State) | |
 | [Strategy](#-Strategy) | |
@@ -327,3 +327,75 @@ ControlPanel got event: {'target': control_panel.NAME, 'event': 'TX', 'order_id'
 ```
 Thanks to the mediator, the components don't need to know the implementations of the others, 
 but need to simply specify the name of the target component.
+
+
+🗯️ Memento
+----------
+
+**Wikipedia says**
+> The memento pattern is a software design pattern that provides the ability to restore an object to its previous state (undo via rollback).  
+> The originator is some object that has an internal state. The caretaker first asks the originator for a memento object. Then it does whatever operation it was going to do. To roll back to the state before the operations, it returns the memento object to the originator.
+
+**In my words**
+> Provides the ability to restore an object to its previous state.
+
+**Example**
+> Imagine a simple text editor. It has basic operations like `write`, `read`, `save` and `rollback` that would be executed when you press `Ctrl + z`. The rolled back contents can be saved as a `Memento` object.
+
+```python
+class Memento:
+    """ memento """
+
+    def __init__(self, content: str):
+        self.content = content
+
+    def get_content(self) -> str:
+        return self.content
+
+
+class TextEditor:
+    """ originator """
+
+    def __init__(self):
+        self.history: List[Memento] = []
+        self.history_limit = 3
+        self.content = ''
+
+    def write(self, text: str):
+        self.save()
+        self.content += text
+
+    def read(self):
+        print(self.content)
+
+    def save(self) -> Memento:
+        self.history.append(Memento(self.content))
+
+        if len(self.history) > self.history_limit:
+            self.history = self.history[-1 * self.history_limit:]
+
+    def rollback(self, step: int = -1):
+        try:
+            memento = self.history[step]
+            self.history = self.history[:step]
+            self.content = memento.get_content()
+        except IndexError:
+            pass
+```
+
+```plaintext
+>>> editor = TextEditor()
+
+>>> editor.write('The memento pattern')
+>>> editor.write(' provides ability')
+>>> editor.write(' to restore an object')
+>>> editor.write(' to its previous state.')
+>>> editor.read()
+The memento pattern provides ability to restore an object to its previous state.
+
+>>> editor.rollback(-3)
+>>> editor.read()
+The memento pattern
+```
+When you call `write` of the editor, it saves its current content into the new `Memento` object appending it to the `history` object, and concatenates passed text to the current content.  
+When `rollback` is called, it retrieves `step` steps before version from the history and overwrites the current content with the previous one.
