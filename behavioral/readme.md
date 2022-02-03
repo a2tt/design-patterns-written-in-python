@@ -12,13 +12,13 @@
 | [Chain-of-Responsibility](#-Chain-of-Responsibility) | Define a chain of the request handler objects each having its responsibility. |
 | [Command](#-Command) | Encapsulate all information needed to perform an action as an object. |
 | [Iterator](#-Iterator) | Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation. |
-| [Mediator](#-Mediator) | Controls communications among multiple objects. So the objects won’t interact with each other directly, and don’t need to know each other. |
+| [Mediator](#-Mediator) | Controls communications among multiple objects. So the objects won't interact with each other directly, and don't need to know each other. |
 | [Memento](#-Memento) | |
 | [Observer](#-Observer) | |
 | [State](#-State) | |
 | [Strategy](#-Strategy) | |
 | [State vs Strategy](#State-vs-Strategy) | |
-| [Template Method](#-Template Method) | |
+| [Template Method](#-Template-Method) | |
 | [Visitor](#-) | |
 
 -----
@@ -248,7 +248,7 @@ Clients of the iterator can traverse the iterable object, but does not need to k
 
 **In my words**
 > A mediator controls communications among multiple objects. 
-> So the objects won’t interact with each other directly, and don’t need to know each other.
+> So the objects won't interact with each other directly, and don't need to know each other.
 
 **Example**
 > Imagine you are building a system trading. There are a control panel that controls all the system,
