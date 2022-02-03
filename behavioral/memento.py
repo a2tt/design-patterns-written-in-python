@@ -1,3 +1,5 @@
+from typing import List
+
 class Memento:
     """ memento """
 
@@ -12,30 +14,40 @@ class TextEditor:
     """ originator """
 
     def __init__(self):
-        self.history = []
+        self.history: List[Memento] = []
+        self.history_limit = 3
         self.content = ''
 
     def write(self, text: str):
+        self.save()
         self.content += text
 
     def read(self):
         print(self.content)
 
     def save(self) -> Memento:
-        return Memento(self.content)
+        self.history.append(Memento(self.content))
 
-    def restore(self, memento: Memento):
-        self.content = memento.get_content()
+        if len(self.history) > self.history_limit:
+            self.history = self.history[-1 * self.history_limit:]
+
+    def rollback(self, step: int = -1):
+        try:
+            memento = self.history[step]
+            self.history = self.history[:step]
+            self.content = memento.get_content()
+        except IndexError:
+            pass
 
 
 if __name__ == '__main__':
     editor = TextEditor()
+
     editor.write('The memento pattern')
+    editor.write(' provides ability')
+    editor.write(' to restore an object')
+    editor.write(' to its previous state.')
     editor.read()
-    saved = editor.save()
 
-    editor.write(' provides ability to restore an object to its previous state.')
-    editor.read()
-    editor.restore(saved)
-
+    editor.rollback(-3)  # "The memento pattern"
     editor.read()
