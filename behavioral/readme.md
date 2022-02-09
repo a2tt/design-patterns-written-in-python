@@ -14,12 +14,12 @@
 | [Iterator](#-Iterator) | Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation. |
 | [Mediator](#-Mediator) | Controls communications among multiple objects. So the objects won't interact with each other directly, and don't need to know each other. |
 | [Memento](#-Memento) | Provides the ability to restore an object to its previous state. |
-| [Observer](#-Observer) | |
+| [Observer](#-Observer) | When a subject changes its state, all registered observers are notified. |
 | [State](#-State) | |
 | [Strategy](#-Strategy) | |
 | [State vs Strategy](#State-vs-Strategy) | |
 | [Template Method](#-Template-Method) | |
-| [Visitor](#-) | |
+| [Visitor](#-Visitor) | |
 
 -----
 
@@ -399,3 +399,60 @@ The memento pattern
 ```
 When you call `write` of the editor, it saves its current content into the new `Memento` object appending it to the `history` object, and concatenates passed text to the current content.  
 When `rollback` is called, it retrieves `step` steps before version from the history and overwrites the current content with the previous one.
+
+
+👂 Observer
+--------------------------
+
+**Wikipedia says**
+> In the observer pattern, an object, named the subject, maintains a list of its dependents, called observers, and notifies the mautomatically of any state changes, usually by calling one of their method.
+
+**In my words**
+> When a subject changes its state, all registered observers are notified.
+
+**Example**
+```python
+from __future__ import annotations
+from typing import List
+
+
+class Observable:
+    """ Observable """
+
+    def __init__(self):
+        self.observers: List[Observer] = []
+
+    def subscribe(self, observer: Observer):
+        if observer not in self.observers:
+            self.observers.append(observer)
+
+    def notify(self, msg: str):
+        for observer in self.observers:
+            observer.notify(msg)
+
+
+class Observer:
+    """ Observer """
+
+    def __init__(self, name: str):
+        self.name = name
+
+    def notify(self, msg: str):
+        print(f'{self.name} got {msg}')
+```
+
+```plaintext
+>>> observer1 = Observer('observer-1')
+>>> observer2 = Observer('observer-2')
+
+>>> observable = Observable()
+>>> observable.subscribe(observer1)
+>>> observable.subscribe(observer2)
+
+>>> observable.notify('meeeessage')
+observer-1 got meeeessage
+observer-2 got meeeessage
+```
+
+**Related**
+- [Mediator](#-mediator)
