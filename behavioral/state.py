@@ -24,12 +24,12 @@ class UpperCaseState(State):
         editor.content += text.upper()
 
 
-class NewParagraphState(State):
+class NewSentenceState(State):
     def write(self, editor: TextEditor, text: str):
-        editor.state = UpperCaseState()
+        editor.set_state(UpperCaseState())
         editor.write_text(text[0])
 
-        editor.state = LowerCaseState()
+        editor.set_state(LowerCaseState())
         editor.write_text(text[1:])
 
 
@@ -47,10 +47,11 @@ class TextEditor:
 
 def main():
     editor = TextEditor()
-    editor.write_text('Hi, I\'m a2tt.\n')
+    editor.set_state(NewSentenceState())
+    editor.write_text('hi, I\'m a2tt. ')
 
-    editor.set_state(NewParagraphState())
-    editor.write_text('the `a2tt` is a base64 encoded string of the initial of my name.')
+    editor.set_state(NewSentenceState())
+    editor.write_text('the `a2tt` is a base64 encoded string of my initials.')
 
     print(editor.content)
 
