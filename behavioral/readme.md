@@ -15,7 +15,7 @@
 | [Mediator](#-Mediator) | Controls communications among multiple objects. So the objects won't interact with each other directly, and don't need to know each other. |
 | [Memento](#-Memento) | Provides the ability to restore an object to its previous state. |
 | [Observer](#-Observer) | When a subject changes its state, all registered observers are notified. |
-| [State](#-State) | |
+| [State](#-State) | Alter object's behavior when its internal state changes.  |
 | [Strategy](#-Strategy) | |
 | [State vs Strategy](#State-vs-Strategy) | |
 | [Template Method](#-Template-Method) | |
@@ -456,3 +456,76 @@ observer-2 got meeeessage
 
 **Related**
 - [Mediator](#-mediator)
+
+
+🦎 State
+---------
+
+**Wikipedia says**
+> The state pattern allows an object to alter its behavior when its internal state changes. This pattern is close to the concept of finite-state machines. The state pattern can be interpreted as a strategy pattern, which is able to switch a strategy through invocations of methods defined in the pattern's interface.
+
+**In my words**
+> Alter object's behavior when its internal state changes. 
+
+**Example**
+> Imagine a simple text editor. When it is in a `NewSentenceState`, the state object sets `UpperCaseState` as new editor's state to write the first character in upper case, and then sets `LowerCaseState` to write the rest in lower case.
+
+```python
+class State(ABC):
+    @abstractmethod
+    def write(self, editor: TextEditor, text: str):
+        raise NotImplementedError
+
+
+class DefaultState(State):
+    def write(self, editor: TextEditor, text: str):
+        editor.content += text
+
+
+class LowerCaseState(State):
+    def write(self, editor: TextEditor, text: str):
+        editor.content += text.lower()
+
+
+class UpperCaseState(State):
+    def write(self, editor: TextEditor, text: str):
+        editor.content += text.upper()
+
+
+class NewSentenceState(State):
+    def write(self, editor: TextEditor, text: str):
+        editor.set_state(UpperCaseState())
+        editor.write_text(text[0])
+
+        editor.set_state(LowerCaseState())
+        editor.write_text(text[1:])
+```
+
+```python
+class TextEditor:
+    def __init__(self):
+        self.state = DefaultState()
+        self.content = ''
+
+    def set_state(self, state: State):
+        self.state = state
+
+    def write_text(self, text: str):
+        self.state.write(self, text)
+```
+
+```plaintext
+>>> editor = TextEditor()
+>>> editor.set_state(NewSentenceState())
+>>> editor.write_text('hi, I\'m a2tt. ')
+
+>>> editor.set_state(NewSentenceState())
+>>> editor.write_text('the `a2tt` is a base64 encoded string of my initials.')
+>>> print(editor.content)
+Hi, i'm a2tt. The `a2tt` is a base64 encoded string of my initials.
+```
+
+**Related**
+- [Strategy](#-strategy)
+- [State vs Strategy](#State-vs-Strategy)
+- Dependency Injection
