@@ -606,3 +606,15 @@ Now, the `Searcher` object chooses an algorithm dynamically depending on the sta
 - [State](#-State)
 - [State vs Strategy](#State-vs-Strategy)
 - Dependency Injection
+
+
+State vs Strategy
+-----------------
+
+**State**
+- It is about **doing different things** based on the state.
+- The state object is allowed to replace itself to another state.
+
+**Strategy**
+- It is about having **different implementation that accomplishes the same thing**.
+- It is not allowed to replace strategy object itself to another one.
