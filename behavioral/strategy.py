@@ -27,16 +27,15 @@ class BinarySearchStrategy(Strategy):
 
 
 class Searcher:
-    def __init__(self, items: List[int], strategy: Strategy):
-        self.items = items
+    def __init__(self, strategy: Strategy):
         self.strategy = strategy
 
     def set_strategy(self, strategy: Strategy):
         self.strategy = strategy
 
-    def find_idx(self, target: int) -> int:
-        print(f'Find {target} from list using {self.strategy.__class__.__name__}')
-        return self.strategy.find_idx(self.items, target)
+    def find_idx(self, items: List[int], target: int) -> int:
+        print(f'Find {target} from {items} using {self.strategy.__class__.__name__}')
+        return self.strategy.find_idx(items, target)
 
 
 def main():
@@ -45,11 +44,14 @@ def main():
         [-3, -1, 1, 2, 4, 7, 9, 10]
     ]
 
+    sequential_strategy = SequentialStrategy()
+    binary_strategy = BinarySearchStrategy()
+    searcher = Searcher(sequential_strategy)
+
     for items in tests:
-        is_sorted = sorted(items) == items
-        strategy = BinarySearchStrategy if is_sorted else SequentialStrategy
-        searcher = Searcher(items, strategy())
-        print(searcher.find_idx(2))
+        strategy = binary_strategy if sorted(items) == items else sequential_strategy
+        searcher.set_strategy(strategy)
+        print(searcher.find_idx(items, 2))
 
 
 if __name__ == '__main__':
