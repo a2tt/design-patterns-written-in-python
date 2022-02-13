@@ -16,7 +16,7 @@
 | [Memento](#-Memento) | Provides the ability to restore an object to its previous state. |
 | [Observer](#-Observer) | When a subject changes its state, all registered observers are notified. |
 | [State](#-State) | Alter object's behavior when its internal state changes.  |
-| [Strategy](#-Strategy) | |
+| [Strategy](#-Strategy) | Allow to select an algorithm based on the situation at runtime. |
 | [State vs Strategy](#State-vs-Strategy) | |
 | [Template Method](#-Template-Method) | |
 | [Visitor](#-Visitor) | |
@@ -526,6 +526,83 @@ Hi, i'm a2tt. The `a2tt` is a base64 encoded string of my initials.
 ```
 
 **Related**
-- [Strategy](#-strategy)
+- [Strategy](#-Strategy)
+- [State vs Strategy](#State-vs-Strategy)
+- Dependency Injection
+
+
+🥷 Strategy
+---------
+
+**Wikipedia says**
+> The strategy pattern enables selecting an algorithm at runtime. Instead of implementing a single algorithm directly, code receives run-time instructions as to which in a family of algorithms to use.
+
+**In my words**
+> Allow to select an algorithm based on the situation at runtime.
+
+**Example**
+> When you search an integer in a list, you have several options for which algorithm to use. If there are two options, sequential search and binary search, you will use the former for the unsorted list, and the latter for the sorted one.
+
+```python
+class Strategy(ABC):
+    @abstractmethod
+    def find_idx(self, items, target: int) -> int:
+        raise NotImplementedError
+
+
+class SequentialStrategy(Strategy):
+    def find_idx(self, items, target: int) -> int:
+        for idx, item in enumerate(items):
+            if item == target:
+                return idx
+        return -1
+
+
+class BinarySearchStrategy(Strategy):
+    def find_idx(self, items, target: int) -> int:
+        idx = bisect.bisect_left(items, target)
+        if idx != len(items) and items[idx] == target:
+            return idx
+        return -1
+
+
+class Searcher:
+    def __init__(self, strategy: Strategy):
+        self.strategy = strategy
+
+    def set_strategy(self, strategy: Strategy):
+        self.strategy = strategy
+
+    def find_idx(self, items: List[int], target: int) -> int:
+        print(f'Find {target} from {items} using {self.strategy.__class__.__name__}')
+        return self.strategy.find_idx(items, target)
+```
+
+```plaintext
+>>> tests = [
+>>>     [1, 7, 4, 9, 10, -1, -3, 2],
+>>>     [-3, -1, 1, 2, 4, 7, 9, 10]
+>>> ]
+
+>>> sequential_strategy = SequentialStrategy()
+>>> binary_strategy = BinarySearchStrategy()
+>>> searcher = Searcher(sequential_strategy)
+
+>>> for items in tests:
+>>>     strategy = binary_strategy if sorted(items) == items else sequential_strategy
+>>>     searcher.set_strategy(strategy)
+>>>     print(searcher.find_idx(items, 2))
+Find 2 from [1, 7, 4, 9, 10, -1, -3, 2] using SequentialStrategy
+7
+Find 2 from [-3, -1, 1, 2, 4, 7, 9, 10] using BinarySearchStrategy
+3
+```
+Now, the `Searcher` object chooses an algorithm dynamically depending on the state of the list.
+
+**A.K.A.**
+- Policy
+
+**Related**
+- [State](#-State)
 - [State vs Strategy](#State-vs-Strategy)
 - Dependency Injection
