@@ -19,7 +19,7 @@
 | [Strategy](#-Strategy) | Allow to select an algorithm based on the situation at runtime. |
 | [State vs Strategy](#State-vs-Strategy) | |
 | [Template Method](#-Template-Method) | Defines the skeleton of an overall steps while allowing subclasses to implement the steps. |
-| [Visitor](#-Visitor) | |
+| [Visitor](#-Visitor) | Define a separate object that implements an operation to be performed on elements of an object structure. |
 
 -----
 
@@ -686,4 +686,88 @@ Save 0 articles to database
 Fetch reddit page https://reddit.com
 Parse reddit page
 Save 0 articles to database
+```
+
+
+🏃 visitor
+--------------------------
+
+**Wikipedia says**
+> The visitor design pattern is a way of separating an algorithm from an object structure on which it operates. A practical result of this separation is the ability to add new operations to existing object structures without modifying the structures.  
+> In essence, the visitor allows adding new virtual functions to a family of classes, without modifying the classes. Instead, a visitor class is created that implements all of the appropriate specializations of the virtual function. The visitor takes the instance reference as input, and implements the goal through double dispatch.
+
+**In my words**
+> Define a separate object that implements an operation to be performed on elements of an object structure.
+
+**Example**
+```python
+class Element(ABC):
+    def __init__(self):
+        self.children: List[Element] = []
+
+    @abstractmethod
+    def accept(self, visitor: Visitor):
+        for child in self.children:
+            child.accept(visitor)
+
+    def add_child(self, element: Element):
+        self.children.append(element)
+
+
+class A(Element):
+    def accept(self, visitor: Visitor):
+        super().accept(visitor)
+        visitor.visit_a(self)
+
+
+class B(Element):
+    def accept(self, visitor: Visitor):
+        super().accept(visitor)
+        visitor.visit_b(self)
+```
+
+```python
+class Visitor(ABC):
+    @abstractmethod
+    def visit_a(self, element: Element):
+        raise NotImplementedError
+
+    @abstractmethod
+    def visit_b(self, element: Element):
+        raise NotImplementedError
+
+
+class PrintVisitor(Visitor):
+    def visit_a(self, element: Element):
+        print('Visit A', element)
+
+    def visit_b(self, element: Element):
+        print('Visit B', element)
+
+
+class LogVisitor(Visitor):
+    def visit_a(self, element: Element):
+        print('Log A', element)
+
+    def visit_b(self, element: Element):
+        print('Log B', element)
+```
+
+```plaintext
+>>> a = A()
+>>> a.accept(PrintVisitor())
+Visit A <__main__.A object at 0x7f093e8aad10>
+
+>>> a.accept(LogVisitor())
+Log A <__main__.A object at 0x7f093e8aad10>
+
+>>> b = B()
+>>> b.add_child(a)
+>>> b.accept(PrintVisitor())
+Visit A <__main__.A object at 0x7f093e8aad10>
+Visit B <__main__.B object at 0x7f093e8aa8f0>
+
+>>> b.accept(LogVisitor())
+Log A <__main__.A object at 0x7f093e8aad10>
+Log B <__main__.B object at 0x7f093e8aa8f0>
 ```
