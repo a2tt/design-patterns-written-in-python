@@ -8,8 +8,8 @@ class Crawler(ABC):
 
     def start(self):
         """
-        The Skeleton of crawler's operation.
-        This methods is not allowed to be overridden.
+        The Skeleton of crawler's operations.
+        This method is not allowed to be overridden.
         """
         self.fetch_page()
         self.parse()

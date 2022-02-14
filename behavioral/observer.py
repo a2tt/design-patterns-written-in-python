@@ -27,7 +27,7 @@ class Observer:
         print(f'{self.name} got {msg}')
 
 
-if __name__ == '__main__':
+def main():
     observer1 = Observer('observer-1')
     observer2 = Observer('observer-2')
 
@@ -36,3 +36,7 @@ if __name__ == '__main__':
     observable.subscribe(observer2)
 
     observable.notify('meeeessage')
+
+
+if __name__ == '__main__':
+    main()

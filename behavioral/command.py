@@ -1,5 +1,5 @@
 """
-Failed to search useful real-world example :@
+Failed to think out useful real-world example :@
 """
 
 from abc import ABC, abstractmethod
@@ -25,7 +25,7 @@ class Command(ABC):
 
     @abstractmethod
     def execute(self):
-        raise NotImplementedError('Please implement this abstract function.')
+        raise NotImplementedError
 
 
 class TurnOnCommand(Command):
@@ -46,7 +46,7 @@ class Button:
         command.execute()
 
 
-if __name__ == '__main__':
+def main():
     # receiver
     bulb = Bulb()
 
@@ -58,3 +58,7 @@ if __name__ == '__main__':
     button = Button()
     button.press(turn_on_command)
     button.press(turn_off_command)
+
+
+if __name__ == '__main__':
+    main()
