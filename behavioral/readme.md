@@ -18,7 +18,7 @@
 | [State](#-State) | Alter object's behavior when its internal state changes.  |
 | [Strategy](#-Strategy) | Allow to select an algorithm based on the situation at runtime. |
 | [State vs Strategy](#State-vs-Strategy) | |
-| [Template Method](#-Template-Method) | |
+| [Template Method](#-Template-Method) | Defines the skeleton of an overall steps while allowing subclasses to implement the steps. |
 | [Visitor](#-Visitor) | |
 
 -----
@@ -618,3 +618,72 @@ State vs Strategy
 **Strategy**
 - It is about having **different implementation that accomplishes the same thing**.
 - It is not allowed to replace strategy object itself to another one.
+
+
+🖼️ Template Method
+--------------------------
+
+**Wikipedia says**
+> The template method is a method in a super class, usually an abstract superclass, and defines the skeleton of an operation in terms of a number of high-level steps. These steps are themselves implemented by additional helper methods in the same class as the template method.  
+> The intent of the template method is to define the overall structure of the operation, while allowing subclasses to refine, or redefine, certain steps.
+
+**In my words**
+> Defines the skeleton of an overall steps while allowing subclasses to implement the steps.
+
+**Example**
+> Imagine a website crawler. It visits a webpage, gather data from the page and save the data to somewhere. These three steps are a general pattern of a crawler. Executing these steps is encapsulated in a template method by a superclass, and each step is implemented by subclasses.
+
+```python
+class Crawler(ABC):
+    def __init__(self, url: str):
+        self.url = url
+        self.crawled = []
+
+    def start(self):
+        """
+        The Skeleton of crawler's operations.
+        This method is not allowed to be overridden.
+        """
+        self.fetch_page()
+        self.parse()
+        self.save()
+
+    @abstractmethod
+    def fetch_page(self):
+        raise NotImplementedError
+
+    @abstractmethod
+    def parse(self):
+        raise NotImplementedError
+
+    def save(self):
+        print(f'Save {len(self.crawled)} articles to database')
+
+
+class TwitterCrawler(Crawler):
+    def fetch_page(self):
+        print('Fetch twitter page', self.url)
+
+    def parse(self):
+        print('Parse twitter page')
+
+
+class RedditCrawler(Crawler):
+    def fetch_page(self):
+        print('Fetch reddit page', self.url)
+
+    def parse(self):
+        print('Parse reddit page')
+```
+
+```plaintext
+>>> TwitterCrawler('https://twitter.com').start()
+Fetch twitter page https://twitter.com
+Parse twitter page
+Save 0 articles to database
+
+>>> RedditCrawler('https://reddit.com').start()
+Fetch reddit page https://reddit.com
+Parse reddit page
+Save 0 articles to database
+```
