@@ -18,7 +18,7 @@
 | [State](#-State) | Alter object's behavior when its internal state changes.  |
 | [Strategy](#-Strategy) | Allow to select an algorithm based on the situation at runtime. |
 | [State vs Strategy](#State-vs-Strategy) | |
-| [Template Method](#%F0%9F%96%BC%EF%B8%8F-Template-Method) | Defines the skeleton of an overall steps while allowing subclasses to implement the steps. |
+| [Template Method](#%EF%B8%8F-Template-Method) | Defines the skeleton of an overall steps while allowing subclasses to implement the steps. |
 | [Visitor](#-Visitor) | Define a separate object that implements an operation to be performed on elements of an object structure. |
 
 -----
