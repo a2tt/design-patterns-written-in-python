@@ -11,14 +11,14 @@
 |:-------:| :---------- |
 | [Chain-of-Responsibility](#-Chain-of-Responsibility) | Define a chain of the request handler objects each having its responsibility. |
 | [Command](#-Command) | Encapsulate all information needed to perform an action as an object. |
-| [Iterator](#-Iterator) | Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation. |
+| [Iterator](#%EF%B8%8F-iterator) | Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation. |
 | [Mediator](#-Mediator) | Controls communications among multiple objects. So the objects won't interact with each other directly, and don't need to know each other. |
-| [Memento](#-Memento) | Provides the ability to restore an object to its previous state. |
+| [Memento](#%EF%B8%8F-memento) | Provides the ability to restore an object to its previous state. |
 | [Observer](#-Observer) | When a subject changes its state, all registered observers are notified. |
 | [State](#-State) | Alter object's behavior when its internal state changes.  |
 | [Strategy](#-Strategy) | Allow to select an algorithm based on the situation at runtime. |
 | [State vs Strategy](#State-vs-Strategy) | |
-| [Template Method](#-Template-Method) | Defines the skeleton of an overall steps while allowing subclasses to implement the steps. |
+| [Template Method](#%F0%9F%96%BC%EF%B8%8F-Template-Method) | Defines the skeleton of an overall steps while allowing subclasses to implement the steps. |
 | [Visitor](#-Visitor) | Define a separate object that implements an operation to be performed on elements of an object structure. |
 
 -----
